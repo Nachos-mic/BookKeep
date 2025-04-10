@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Book, GetBooksResponse} from "../interfaces/book.interface.tsx";
+import {Book, GetBooksResponse} from "../interfaces/book.interface.ts";
 import "../styles/Style.css"
+import port from "../src/config.ts"
 
 
 const Books: React.FC = () => {
@@ -15,7 +16,7 @@ const Books: React.FC = () => {
     }, []);
 
     const fetchBooks = (): Promise<void> => {
-        return axios.get<GetBooksResponse>('http://localhost:3100/api/v1/books')
+        return axios.get<GetBooksResponse>(`http://localhost:${port}/api/v1/books`)
             .then(response => {
                 const result = response.data;
                 setBooks(result.data);
@@ -26,8 +27,8 @@ const Books: React.FC = () => {
             });
     };
 
-    const deleteBook = async (bookId: string) => {
-        axios.delete(`http://localhost:3100/api/v1/books/${bookId}`)
+    const deleteBook = async (book_id: string) => {
+        axios.delete(`http://localhost:${port}/api/v1/books/${book_id}`)
             .then(response => {
                 console.log(response);
                 fetchBooks();

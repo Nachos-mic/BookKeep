@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Bestseller} from "../interfaces/bestseller.interface.tsx";
+import {Bestseller} from "../interfaces/bestseller.interface.ts";
 import "../styles/Style.css"
+import port from '../src/config.ts';
 
 
 const Bestsellers: React.FC = () => {
@@ -12,7 +13,7 @@ const Bestsellers: React.FC = () => {
     }, []);
 
     const fetchBestsellers = (): Promise<void> => {
-        return axios.get<Bestseller[]>('http://localhost:3100/api/v1/bestsellers')
+        return axios.get<Bestseller[]>(`http://localhost:${port}/api/v1/bestsellers`)
             .then(response => {
                 const result = response.data;
                 setBestsellers(result);
