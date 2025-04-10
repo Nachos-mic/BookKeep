@@ -1,25 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {Book, GetBooksResponse} from "../interfaces/book.interface.tsx";
+import "../styles/Style.css"
 
-interface Book {
-    _id: string;
-    name: string;
-    author: string;
-    is_read: boolean;
-    genre: string;
-    rating: number;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-}
-
-interface ApiResponse {
-    data: Book[];
-    total: number;
-    page: number;
-    limit: number;
-    total_pages: number;
-}
 
 const Books: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
@@ -31,18 +14,28 @@ const Books: React.FC = () => {
         fetchBooks();
     }, []);
 
-    const fetchBooks = async (): Promise<void> => {
-        try {
-            const response = await axios.get<ApiResponse>('http://localhost:3100/api/v1/books');
-            const result = response.data;
-
+    const fetchBooks = (): Promise<void> => {
+        return axios.get<GetBooksResponse>('http://localhost:3100/api/v1/books')
+            .then(response => {
+                const result = response.data;
                 setBooks(result.data);
                 setTotalPages(result.total_pages);
-        } catch (error) {
-            console.error('Błąd podczas pobierania danych:', error);
-
-        }
+            })
+            .catch(error => {
+                console.error('Błąd podczas pobierania danych:', error);
+            });
     };
+
+    const deleteBook = async (bookId: string) => {
+        axios.delete(`http://localhost:3100/api/v1/books/${bookId}`)
+            .then(response => {
+                console.log(response);
+                fetchBooks();
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
     const handlePageChange = (newPage: number): void => {
         if (newPage >= 1 && newPage <= totalPages) {
@@ -56,53 +49,54 @@ const Books: React.FC = () => {
     };
 
     return (
-        <div className="books-container">
+        <div>
             <h2>BookKeep - notatnik do książek</h2>
 
-                <>
+                <div>
                     <div className="books-grid">
                         {books.map((book: Book) => (
                             <div key={book._id} className="book-card">
-                                <h3 className="book-title">{book.name}</h3>
-                                <p className="book-author">Autor: {book.author}</p>
-                                <p className="book-genre">Gatunek: {book.genre}</p>
-                                <div className="book-rating">
-                                    Ocena: <span className="rating-value">{book.rating}/10</span>
-                                </div>
-                                <div className="book-status">
-                                    Status: <span className={book.is_read ? "read" : "not-read"}>
+
+                                <h3>{book.name}</h3>
+                                <text>Autor: {book.author}<br/></text>
+                                <text>Gatunek: {book.genre}<br/></text>
+                                <text>Ocena: {book.rating}/10<br/></text>
+                                <text>Status: <span className={book.is_read ? "read" : "not-read"}>
                                         {book.is_read ? "Przeczytana" : "Nieprzeczytana"}
                                     </span>
+                                    <br/>
+                                </text>
+                                <text>Dodano: {formatDate(book.createdAt)}</text>
+                                <div>
+                                    <button>Edytuj książkę</button>
                                 </div>
-                                <div className="book-date">
-                                    Dodano: {formatDate(book.createdAt)}
+                                <div>
+                                    <button onClick={() => deleteBook(book._id)}>Usuń książkę z kolekcji</button>
                                 </div>
                             </div>
                         ))}
                     </div>
 
-                    <div className="pagination">
+                    <div>
                         <button
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className="pagination-button"
-                        >
+                            className="pagination-button">
                             &laquo; Poprzednia
                         </button>
 
-                        <span className="page-info">
+                        <span>
                             Strona {currentPage} z {totalPages}
                         </span>
 
                         <button
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
-                            className="pagination-button"
                         >
                             Następna &raquo;
                         </button>
                     </div>
-                </>
+                </div>
 
         </div>
     );

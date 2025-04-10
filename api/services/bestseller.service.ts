@@ -24,9 +24,9 @@ class BestsellersService {
             const top10 = books.slice(0, 10).map((book: any) => ({
                 title: book.title,
                 author: book.author,
+                weeks_on_list: book.weeks_on_list,
                 rank: book.rank,
-                soldCopies: book.sold_copies || 0,
-                fetchedAt: new Date()
+                fetch_time: new Date()
             }));
 
             await this.bestsellersRepository.clearAndInsert(top10);
