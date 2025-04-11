@@ -8,7 +8,7 @@ class BestsellersService {
 
     constructor() {
         this.bestsellersRepository = new BestsellersRepository();
-        this.fetchInterval = 4 * 60 * 60 * 1000;
+        this.fetchInterval = 4 * 60 * 60 * 1000; //Co cztery godziny
         this.scheduleFetch();
     }
 

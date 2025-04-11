@@ -59,10 +59,6 @@ class BookRepository {
             ]
         });
     }
-
-    public async getGenres(): Promise<string[]> {
-        return BookModel.distinct('genre');
-    }
 }
 
 export default BookRepository;

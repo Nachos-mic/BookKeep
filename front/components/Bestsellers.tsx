@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Bestseller} from "../interfaces/bestseller.interface.ts";
 import "../styles/Style.css"
 import port from '../src/config.ts';
-
+import './SearchForm.tsx'
 
 const Bestsellers: React.FC = () => {
     const [bestsellers, setBestsellers] = useState<Bestseller[]>([]);

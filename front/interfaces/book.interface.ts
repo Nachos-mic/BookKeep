@@ -18,3 +18,11 @@ export interface GetBooksResponse {
     total_pages: number;
 }
 
+export interface NewBook {
+    name: string;
+    author: string;
+    is_read: boolean;
+    genre: string;
+    rating: number;
+}
+
