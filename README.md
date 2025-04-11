@@ -1,6 +1,6 @@
 Aplikacja posiada zestaw 6 endpointów:
 
-GET - localhost:3100/api/v1/books (pobiera wszystkie książki w bazie) <br />
+GET - localhost:3100/api/v1/books (pobiera wszystkie książki w bazie, można także filtrować je poprzez dodanie parametrów zapytania np: .../api/v1/books/?genre=fantasy&limit=20&sort=title&order=asc) <br />
 GET - localhost:3100/api/v1/books/id (pobiera daną książkę z bazy na podstawie jej id nadanego przez mongoDB, bezpośrednio w aplikacji webowej nie jest wykorzystany) <br />
 POST - localhost:3100/api/v1/books (dodaje ksiażkę do bazy danych) <br />
 PUT - localhost:3100/api/v1/books/id (edytuje daną książkę w bazie) <br />
